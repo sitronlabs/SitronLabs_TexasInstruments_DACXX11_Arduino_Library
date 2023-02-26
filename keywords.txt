@@ -1,0 +1,6 @@
+dacxx11	KEYWORD1
+setup	KEYWORD2
+reference_voltage_set	KEYWORD2
+output_ratio_set	KEYWORD2
+output_voltage_set	KEYWORD2
+power_down	KEYWORD2

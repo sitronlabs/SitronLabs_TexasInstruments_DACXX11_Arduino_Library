@@ -1,6 +1,6 @@
 {
     "name": "Sitron_Labs_DACXX11_Arduino_Library",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Arduino library for Texas Instruments family of DACxx11 digital to analog converters.",
     "keywords": "sitron labs,sitron,labs,arduino,library,spi,dac,digital to analog,digital to analog converter,dac5311,dac6311,dac7311,dac8311,dac8411,buffered,rail to rail",
     "repository": {

@@ -2,9 +2,19 @@
 #include "dacxx11.h"
 
 /**
+ * @brief Initializes the DAC device with SPI communication
  *
- * @param[in] spi_library
- * @return 0 in case of success, or a negative error code otherwise.
+ * Configures the SPI interface and chip select pin. The reference voltage
+ * parameter is used for voltage calculations but does not set the actual
+ * hardware reference voltage.
+ *
+ * @note Call this from the Arduino setup function.
+ * @note Make sure the SPI library has been initialized (with a call to SPI.begin() for example).
+ * @param[in] spi_library Reference to the SPI library instance to use
+ * @param[in] spi_speed SPI clock speed in Hz (maximum 50 MHz)
+ * @param[in] pin_cs GPIO pin number connected to the chip select (CS) pin
+ * @param[in] voltage Reference voltage in volts (maximum 5.5V)
+ * @return 0 on success, or a negative error code otherwise
  */
 int dacxx11::setup(SPIClass& spi_library, const int spi_speed, const int pin_cs, const float voltage) {
 
@@ -33,9 +43,13 @@ int dacxx11::setup(SPIClass& spi_library, const int spi_speed, const int pin_cs,
 }
 
 /**
+ * @brief Updates the reference voltage value used for voltage calculations
  *
- * @param[in] voltage
- * @return 0 in case of success, or a negative error code otherwise.
+ * This function updates the library's internal reference voltage value.
+ * It does not change the actual hardware reference voltage.
+ *
+ * @param[in] voltage Reference voltage in volts (maximum 5.5V)
+ * @return 0 on success, or a negative error code otherwise
  */
 int dacxx11::reference_voltage_set(const float voltage) {
 
@@ -52,9 +66,13 @@ int dacxx11::reference_voltage_set(const float voltage) {
 }
 
 /**
+ * @brief Sets the DAC output as a ratio of the reference voltage
  *
- * @param[in] ratio
- * @return 0 in case of success, or a negative error code otherwise.
+ * Sets the output voltage as a percentage of the reference voltage.
+ * A ratio of 0.0 corresponds to 0V, and 1.0 corresponds to the full reference voltage.
+ *
+ * @param[in] ratio Output ratio from 0.0 (0% of reference) to 1.0 (100% of reference)
+ * @return 0 on success, or a negative error code otherwise
  */
 int dacxx11::output_ratio_set(const float ratio) {
 
@@ -114,9 +132,13 @@ int dacxx11::output_ratio_set(const float ratio) {
 }
 
 /**
+ * @brief Sets the DAC output to a specific voltage
  *
- * @param[in] voltage
- * @return 0 in case of success, or a negative error code otherwise.
+ * Calculates the required DAC code to achieve the specified output voltage
+ * based on the current reference voltage setting.
+ *
+ * @param[in] voltage Desired output voltage in volts (must be between 0 and the reference voltage)
+ * @return 0 on success, or a negative error code otherwise
  */
 int dacxx11::output_voltage_set(const float voltage) {
     if (m_voltage <= 0) {
@@ -127,8 +149,14 @@ int dacxx11::output_voltage_set(const float voltage) {
 }
 
 /**
+ * @brief Puts the DAC into a power-down mode
  *
- * @return 0 in case of success, or a negative error code otherwise.
+ * Reduces power consumption by putting the DAC into a low-power state.
+ * The output behavior depends on the selected power-down mode.
+ *
+ * @note To resume normal operation, call output_voltage_set() or output_ratio_set().
+ * @param[in] mode Power-down mode to use
+ * @return 0 on success, or a negative error code otherwise
  */
 int dacxx11::power_down(const enum power_down_mode mode) {
 
